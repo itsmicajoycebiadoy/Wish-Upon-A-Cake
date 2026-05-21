@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-
-
 export function useBlowDetection({
   onBlowCandle,
   startMusic,
@@ -13,7 +11,7 @@ export function useBlowDetection({
   const timeoutRef = useRef(null);
 
   const [listening, setListening] = useState(false);
-  const [permission, setPermission] = useState("idle"); // idle | granted | denied
+  const [permission, setPermission] = useState("idle"); 
   const [hint, setHint] = useState("");
 
 

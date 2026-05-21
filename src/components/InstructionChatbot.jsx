@@ -6,9 +6,10 @@ function formatAssistant(text) {
 }
 
 export default function InstructionChatbot() {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState(() => [
     {
+
       id: "m0",
       role: "assistant",
       text:
@@ -72,8 +73,10 @@ export default function InstructionChatbot() {
     if (s.includes("help") || s.includes("instructions") || s.includes("how do i")) {
       return [
         "Quick guide:",
-        "1) Click each lit candle body to blow it out.",
-        "2) After the last candle is out, “Happy Birthday Greetings” appears.",
+        "1) Tap the lit candles to blow them out.",
+
+        "2) After the last candle is out, the birthday greeting appears!",
+
         "3) Music can be played/stopped using the button.",
       ].join("\n");
     }
@@ -121,9 +124,10 @@ export default function InstructionChatbot() {
     >
 {open && (
         <div className="rounded-2xl shadow-2xl border border-white/10 bg-black/60 backdrop-blur-md overflow-hidden">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
 
             <div className="flex items-center gap-2">
+
               <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-pink-500 to-purple-500 text-white">
                 🤖
               </div>

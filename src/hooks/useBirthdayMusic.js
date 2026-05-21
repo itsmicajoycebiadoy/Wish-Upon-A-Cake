@@ -3,6 +3,7 @@ import { useCallback, useRef } from "react";
 export function useBirthdayMusic() {
   const ctxRef = useRef(null);
   const nodesRef = useRef([]);
+  const genRef = useRef(0);
 
   const stopAll = useCallback(() => {
     nodesRef.current.forEach((n) => {
@@ -15,82 +16,93 @@ export function useBirthdayMusic() {
     nodesRef.current = [];
   }, []);
 
-  const playOnce = useCallback(() => {
-    if (!ctxRef.current) {
-      ctxRef.current = new (window.AudioContext || window.webkitAudioContext)();
-    }
+  const playOnce = useCallback(
+    (generationAtStart) => {
+      if (!ctxRef.current) {
+        ctxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
 
-    const ctx = ctxRef.current;
-    if (ctx.state === "suspended") ctx.resume();
+      const ctx = ctxRef.current;
+      if (ctx.state === "suspended") ctx.resume();
 
-    stopAll();
+      // If stop() happened after this playOnce was scheduled, don't schedule new oscillators.
+      if (genRef.current !== generationAtStart) return;
 
-    const NOTE = (f, t, d, vol = 0.22) => {
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const now = ctx.currentTime + t;
+      // Cancel any currently playing oscillators from a previous tick.
+      stopAll();
 
-      osc.type = "triangle";
-      osc.frequency.setValueAtTime(f, now);
+      const NOTE = (f, t, d, vol = 0.22) => {
+        // Bail out if stop() happened mid-scheduling.
+        if (genRef.current !== generationAtStart) return;
 
-      gain.gain.setValueAtTime(0, now);
-      gain.gain.linearRampToValueAtTime(vol, now + 0.04);
-      gain.gain.setValueAtTime(vol, now + d - 0.05);
-      gain.gain.linearRampToValueAtTime(0, now + d);
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const now = ctx.currentTime + t;
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(now);
-      osc.stop(now + d + 0.01);
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(f, now);
 
-      nodesRef.current.push(osc);
-    };
+        gain.gain.setValueAtTime(0, now);
+        gain.gain.linearRampToValueAtTime(vol, now + 0.04);
+        gain.gain.setValueAtTime(vol, now + d - 0.05);
+        gain.gain.linearRampToValueAtTime(0, now + d);
 
-    const HARM = (f, t, d) => NOTE(f, t, d, 0.06);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + d + 0.01);
 
-    const bpm = 100;
-    const b = 60 / bpm;
+        nodesRef.current.push(osc);
+      };
 
-    const notes = [
-      // "Happy Birthday to you"
-      [261.63, 0 * b, 0.4 * b],
-      [261.63, 0.5 * b, 0.2 * b],
-      [293.66, 0.75 * b, 1 * b],
-      [261.63, 1.75 * b, 1 * b],
-      [349.23, 2.75 * b, 1 * b],
-      [329.63, 3.75 * b, 2 * b],
+      const HARM = (f, t, d) => NOTE(f, t, d, 0.06);
 
-      // "Happy Birthday to you"
-      [261.63, 5.75 * b, 0.4 * b],
-      [261.63, 6.25 * b, 0.2 * b],
-      [293.66, 6.5 * b, 1 * b],
-      [261.63, 7.5 * b, 1 * b],
-      [392.0, 8.5 * b, 1 * b],
-      [349.23, 9.5 * b, 2 * b],
+      const bpm = 100;
+      const b = 60 / bpm;
 
-      // "Happy Birthday dear friend"
-      [261.63, 11.5 * b, 0.4 * b],
-      [261.63, 12 * b, 0.2 * b],
-      [523.25, 12.25 * b, 1 * b],
-      [440.0, 13.25 * b, 1 * b],
-      [349.23, 14.25 * b, 1 * b],
-      [329.63, 15.25 * b, 1 * b],
-      [293.66, 16.25 * b, 2 * b],
+      const notes = [
+        // "Happy Birthday to you"
+        [261.63, 0 * b, 0.4 * b],
+        [261.63, 0.5 * b, 0.2 * b],
+        [293.66, 0.75 * b, 1 * b],
+        [261.63, 1.75 * b, 1 * b],
+        [349.23, 2.75 * b, 1 * b],
+        [329.63, 3.75 * b, 2 * b],
 
-      // "Happy Birthday to you"
-      [466.16, 18.25 * b, 0.4 * b],
-      [466.16, 18.75 * b, 0.2 * b],
-      [440.0, 19 * b, 1 * b],
-      [349.23, 20 * b, 1 * b],
-      [392.0, 21 * b, 1 * b],
-      [349.23, 22 * b, 2.5 * b],
-    ];
+        // "Happy Birthday to you"
+        [261.63, 5.75 * b, 0.4 * b],
+        [261.63, 6.25 * b, 0.2 * b],
+        [293.66, 6.5 * b, 1 * b],
+        [261.63, 7.5 * b, 1 * b],
+        [392.0, 8.5 * b, 1 * b],
+        [349.23, 9.5 * b, 2 * b],
 
-    notes.forEach(([f, t, d]) => {
-      NOTE(f, t, d);
-      HARM(f * 1.5, t, d);
-    });
-  }, [stopAll]);
+        // "Happy Birthday dear friend"
+        [261.63, 11.5 * b, 0.4 * b],
+        [261.63, 12 * b, 0.2 * b],
+        [523.25, 12.25 * b, 1 * b],
+        [440.0, 13.25 * b, 1 * b],
+        [349.23, 14.25 * b, 1 * b],
+        [329.63, 15.25 * b, 1 * b],
+        [293.66, 16.25 * b, 2 * b],
+
+        // "Happy Birthday to you"
+        [466.16, 18.25 * b, 0.4 * b],
+        [466.16, 18.75 * b, 0.2 * b],
+        [440.0, 19 * b, 1 * b],
+        [349.23, 20 * b, 1 * b],
+        [392.0, 21 * b, 1 * b],
+        [349.23, 22 * b, 2.5 * b],
+      ];
+
+      notes.forEach(([f, t, d]) => {
+        if (genRef.current !== generationAtStart) return;
+        NOTE(f, t, d);
+        HARM(f * 1.5, t, d);
+      });
+    },
+    [stopAll]
+  );
 
   const loopRef = useRef(null);
 
@@ -99,13 +111,20 @@ export function useBirthdayMusic() {
     const b = 60 / bpm;
     const totalDurMs = (25 * b + 0.5) * 1000;
 
-    playOnce();
+    // New generation token: invalidates any previous/queued playOnce.
+    const generationAtStart = ++genRef.current;
 
     if (loopRef.current) clearInterval(loopRef.current);
-    loopRef.current = setInterval(playOnce, totalDurMs);
+    loopRef.current = null;
+
+    playOnce(generationAtStart);
+    loopRef.current = setInterval(() => playOnce(generationAtStart), totalDurMs);
   }, [playOnce]);
 
   const stop = useCallback(() => {
+    // Invalidate any future scheduled playOnce calls.
+    genRef.current++;
+
     if (loopRef.current) clearInterval(loopRef.current);
     loopRef.current = null;
     stopAll();
@@ -113,4 +132,5 @@ export function useBirthdayMusic() {
 
   return { startLoop, stop };
 }
+
 

@@ -28,7 +28,7 @@ export default function GreetingScreen() {
             textShadow: "0 0 30px #ff69b4, 0 0 60px #ff1493",
           }}
         >
-          Happy Birthday Greetings
+          Happy Birthday, You!
         </h1>
       </div>
 

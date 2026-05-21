@@ -1,19 +1,21 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import InstructionChatbot from "./components/InstructionChatbot.jsx";
+import LoginScreen from "./components/LoginScreen.jsx";
 
-/* ─── CONSTANTS ─────────────────────────────────────── */
-const CANDLE_COUNT = 6;
+
+
+/*CONSTANTS */
+const CANDLE_COUNT = 3;
+
+
 const COLORS = [
   { body: "#ff6b9d", stripe: "#ff9ec4" },
   { body: "#ffd166", stripe: "#ffe599" },
   { body: "#06d6a0", stripe: "#7effd9" },
-  { body: "#118ab2", stripe: "#5ac8f5" },
-  { body: "#ef476f", stripe: "#ff8fab" },
-  { body: "#a855f7", stripe: "#d8b4fe" },
 ];
 const CONFETTI_COLORS = ["#ff6b9d","#ffd166","#06d6a0","#118ab2","#ef476f","#a855f7","#fff","#ff9900"];
 
-/* ─── MUSIC ─────────────────────────────────────────── */
+/* MUSIC*/
 function useBirthdayMusic() {
   const ctxRef = useRef(null);
   const nodesRef = useRef([]);
@@ -83,7 +85,7 @@ function useBirthdayMusic() {
   return { startLoop, stop };
 }
 
-/* ─── CONFETTI ───────────────────────────────────────── */
+/*CONFETTI*/
 function Confetti() {
   const [pieces] = useState(() =>
     Array.from({ length: 80 }, (_, i) => ({
@@ -111,7 +113,7 @@ function Confetti() {
   );
 }
 
-/* ─── STARS ─────────────────────────────────────────── */
+/*STARS*/
 function Stars() {
   const [stars] = useState(() =>
     Array.from({ length: 80 }, (_, i) => ({
@@ -133,7 +135,7 @@ function Stars() {
   );
 }
 
-/* ─── CANDLE ─────────────────────────────────────────── */
+/*CANDLE*/
 function Candle({ color, isLit, blowing, onClick }) {
   return (
     <div
@@ -166,7 +168,7 @@ function Candle({ color, isLit, blowing, onClick }) {
   );
 }
 
-/* ─── CAKE ───────────────────────────────────────────── */
+/* CAKE*/
 function Cake({ candles, blowingIdx, onBlowCandle }) {
   return (
     <div className="flex flex-col items-center select-none">
@@ -190,7 +192,6 @@ function Cake({ candles, blowingIdx, onBlowCandle }) {
           <div key={i} className="absolute top-0 rounded-b-full bg-white opacity-80"
             style={{ left: x, width: 18, height: 10 + (i%3)*5 }} />
         ))}
-        <span className="font-quicksand font-bold text-white text-sm tracking-wider z-10 drop-shadow">🎂 Birthday Cake</span>
       </div>
 
       <div className="relative rounded-lg overflow-hidden flex items-center justify-center"
@@ -201,9 +202,6 @@ function Cake({ candles, blowingIdx, onBlowCandle }) {
           <div key={i} className="absolute top-0 rounded-b-full bg-white opacity-70"
             style={{ left: x, width: 20, height: 8 + (i%4)*4 }} />
         ))}
-        <div className="flex gap-3 z-10">
-          {["🌸","⭐","🌸","⭐","🌸"].map((e,i) => <span key={i} className="text-lg">{e}</span>)}
-        </div>
       </div>
 
       <div className="relative rounded-lg overflow-hidden flex items-center justify-center"
@@ -214,9 +212,6 @@ function Cake({ candles, blowingIdx, onBlowCandle }) {
           <div key={i} className="absolute top-0 rounded-b-full bg-white opacity-70"
             style={{ left: x, width: 22, height: 10 + (i%3)*6 }} />
         ))}
-        <div className="flex gap-2 z-10">
-          {["💖","🎵","🎉","🎊","🎵","💖"].map((e,i) => <span key={i} className="text-xl">{e}</span>)}
-        </div>
       </div>
 
       <div className="rounded-full" style={{
@@ -228,11 +223,15 @@ function Cake({ candles, blowingIdx, onBlowCandle }) {
   );
 }
 
-/* ─── GREETING SCREEN ─────────────────────────────────── */
-function GreetingScreen() {
-  const emojis = ["🎉","🎊","✨","💫","🎈","🎁","🧁","🎀","💝","🥳"];
+/*GREETING SCREEN*/
+function GreetingScreen({ userName = "" }) {
+  const celebrant = (userName || "").trim() || "You";
+
+  const emojis = [];
   return (
     <div className="flex flex-col items-center gap-6 animate-popIn">
+
+
       <div className="flex gap-4 text-4xl animate-bounceSoft">
         {emojis.slice(0,5).map((e,i) => (
           <span key={i} style={{ animationDelay: `${i*0.15}s`, display:"inline-block" }}
@@ -240,37 +239,28 @@ function GreetingScreen() {
         ))}
       </div>
       <div className="text-center">
-        <h1 className="font-pacifico text-5xl md:text-7xl animate-pulse3d"
+          <h1 className="font-pacifico text-5xl md:text-7xl animate-pulse3d"
           style={{ color: "#ff6b9d", textShadow: "0 0 30px #ff69b4, 0 0 60px #ff1493" }}>
-          Happy Birthday
+          Happy Birthday, {celebrant}!
         </h1>
-        <h1 className="font-pacifico text-5xl md:text-7xl animate-pulse3d mt-2"
-          style={{ color: "#ffd166", textShadow: "0 0 30px #ffd166, 0 0 60px #ff9900", animationDelay: "0.3s" }}>
-          Greetings! 🎂
-        </h1>
+
+
       </div>
       <p className="font-quicksand font-bold text-xl md:text-2xl text-white opacity-90 animate-slideDown text-center px-4"
         style={{ animationDelay: "0.4s" }}>
-        May your day be as magical as you are! ✨
+        May your day be as magical as you are! 
       </p>
-      <div className="flex gap-4 text-3xl animate-wiggle" style={{ animationDelay: "0.6s" }}>
-        {emojis.slice(5).map((e,i) => <span key={i}>{e}</span>)}
-      </div>
-      <div className="mt-2 px-8 py-3 rounded-full font-quicksand font-bold text-white text-lg animate-slideDown"
-        style={{
-          background: "linear-gradient(135deg,#ff6b9d,#a855f7)",
-          boxShadow: "0 0 30px rgba(255,107,157,0.5)",
-          animationDelay: "0.8s",
-        }}>
-        🌟 Wishing you all the love & joy! 🌟
-      </div>
     </div>
   );
 }
 
-/* ─── MAIN APP ───────────────────────────────────────── */
+/*MAIN APP*/
 export default function App() {
   const [candles, setCandles] = useState(Array(CANDLE_COUNT).fill(true));
+  const [playerName, setPlayerName] = useState("");
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
   const [blowingIdx, setBlowingIdx] = useState(null);
   const [allBlown, setAllBlown] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -306,7 +296,7 @@ export default function App() {
 
   useEffect(() => () => clearTimeout(blowTimeoutRef.current), []);
 
-  const litCount = candles.filter(Boolean).length;
+
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative px-4 py-8"
@@ -318,39 +308,78 @@ export default function App() {
         style={{ background: "radial-gradient(ellipse at 50% 70%, rgba(255,107,157,0.08) 0%, transparent 70%)" }} />
 
       <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-lg">
-        {!allBlown ? (
+        {!playerName ? (
+          <LoginScreen
+
+            onLogin={async ({ name, password }) => {
+              try {
+                setIsLoggingIn(true);
+                setLoginError("");
+
+                const payload = {
+                  name: name.trim(),
+                  password,
+                };
+
+                // Local multi-user “login” stored in browser
+                // (no server / no API calls)
+                const key = "birthday_users_v1";
+                const raw = window.localStorage.getItem(key);
+                const users = raw ? JSON.parse(raw) : [];
+
+                const existing = users.find(
+                  (u) => String(u.name).toLowerCase() === String(payload.name).toLowerCase()
+                );
+
+                if (existing) {
+                  if (existing.password !== payload.password) {
+                    setLoginError("Incorrect password.");
+                    return;
+                  }
+                } else {
+                  users.push({ name: payload.name, password: payload.password });
+                  window.localStorage.setItem(key, JSON.stringify(users));
+                }
+
+                setPlayerName(payload.name);
+                window.localStorage.setItem("birthday_last_user_v1", payload.name);
+              } catch {
+                setLoginError("Could not log in. Storage may be blocked.");
+              } finally {
+                setIsLoggingIn(false);
+              }
+            }}
+            loading={isLoggingIn}
+            error={loginError}
+          />
+        ) : !allBlown ? (
+
           <>
             <div className="text-center animate-slideDown">
               <p className="font-quicksand text-white/60 text-sm tracking-widest uppercase mb-1">
-                A special surprise awaits...
+                Wish Mode
               </p>
-              <h2 className="font-pacifico text-3xl md:text-4xl"
-                style={{ color: "#ffd166", textShadow: "0 0 20px rgba(255,209,102,0.5)" }}>
-                🕯️ Make a Wish! 🕯️
+              <h2 className="font-pacifico text-3xl md:text-4xl" style={{ color: "#ffd166" }}>
+                Make your wish ✨
               </h2>
             </div>
 
-            <div className="flex gap-2 items-center">
-              {candles.map((lit, i) => (
-                <div key={i} className={`w-3 h-3 rounded-full transition-all duration-300 ${lit ? "bg-yellow-400" : "bg-gray-700"}`}
-                  style={lit ? { boxShadow: "0 0 8px #ffd166" } : {}} />
-              ))}
-              <span className="ml-2 font-quicksand text-white/50 text-sm">{litCount} left</span>
-            </div>
 
             <div className="relative">
-              <div className="absolute -inset-8 rounded-full opacity-20 blur-3xl"
-                style={{ background: "radial-gradient(circle, #ff6b9d, #ffd166, transparent)" }} />
+              <div
+                className="absolute -inset-8 rounded-full opacity-20 blur-3xl"
+                style={{
+                  background: "radial-gradient(circle, #ff6b9d, #ffd166, transparent)",
+                }}
+              />
               <Cake candles={candles} blowingIdx={blowingIdx} onBlowCandle={blowCandle} />
             </div>
-
-            <p className="font-quicksand text-white/50 text-sm text-center animate-slideDown">
-              👆 Click each candle to blow it out! 🌬️
-            </p>
           </>
         ) : (
-          <GreetingScreen />
+          <GreetingScreen userName={playerName} />
         )}
+
+
       </div>
 
       <InstructionChatbot />
@@ -361,7 +390,7 @@ export default function App() {
           else { startLoop(); setMusicStarted(true); }
         }}
         className="fixed bottom-5 right-5 z-50 w-10 h-10 rounded-full flex items-center justify-center text-lg bg-white/10 hover:bg-white/20 transition-all backdrop-blur-sm border border-white/20"
-        title={musicStarted ? "Stop music" : "Play music"}>
+        title={musicStarted ? "Stop music" : "Play music"} aria-label={musicStarted ? "Mute music" : "Play music"}>
         {musicStarted ? "🔇" : "🔊"}
       </button>
     </div>
