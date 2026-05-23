@@ -9,9 +9,9 @@ const CANDLE_COUNT = 3;
 
 
 const COLORS = [
-  { body: "#ff6b9d", stripe: "#ff9ec4" },
-  { body: "#ffd166", stripe: "#ffe599" },
-  { body: "#06d6a0", stripe: "#7effd9" },
+  { body: "#a855f7", stripe: "#d8b4fe" },
+  { body: "#60a5fa", stripe: "#bfdbfe" },
+  { body: "#f472b6", stripe: "#fbcfe8" },
 ];
 const CONFETTI_COLORS = ["#ff6b9d","#ffd166","#06d6a0","#118ab2","#ef476f","#a855f7","#fff","#ff9900"];
 
@@ -300,7 +300,10 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center relative px-4 py-8"
-      style={{ background: "radial-gradient(ellipse at center, #1a0533 0%, #0d0015 100%)" }}>
+      style={{
+        background:
+          "radial-gradient(ellipse at center, rgba(168,85,247,0.35) 0%, rgba(30,64,175,0.25) 35%, rgba(9,9,33,1) 100%)",
+      }}>
       <Stars />
       {showConfetti && <Confetti />}
 
@@ -386,12 +389,20 @@ export default function App() {
 
       <button
         onClick={() => {
-          if (musicStarted) { stopMusic(); setMusicStarted(false); }
-          else { startLoop(); setMusicStarted(true); }
+          // ▶️ should play, ⏹ should stop
+          if (musicStarted) {
+            stopMusic();
+            setMusicStarted(false);
+          } else {
+            startLoop();
+            setMusicStarted(true);
+          }
         }}
-        className="fixed bottom-5 right-5 z-50 w-10 h-10 rounded-full flex items-center justify-center text-lg bg-white/10 hover:bg-white/20 transition-all backdrop-blur-sm border border-white/20"
-        title={musicStarted ? "Stop music" : "Play music"} aria-label={musicStarted ? "Mute music" : "Play music"}>
-        {musicStarted ? "🔇" : "🔊"}
+        className="fixed bottom-5 right-5 z-50 w-11 h-11 rounded-full flex items-center justify-center text-lg bg-white/10 hover:bg-white/20 transition-all backdrop-blur-sm border border-white/20 shadow-[0_0_24px_rgba(168,85,247,0.35)]"
+        title={musicStarted ? "Stop music" : "Play music"}
+        aria-label={musicStarted ? "Stop music" : "Play music"}
+      >
+        {musicStarted ? "⏹️" : "▶️"}
       </button>
     </div>
   );

@@ -16,6 +16,9 @@ export function useBirthdayMusic() {
     nodesRef.current = [];
   }, []);
 
+  // When stop() is hit, clear any currently queued oscillators by invalidating generation.
+  // This prevents any “next tick” play from re-activating UI tied to music.
+
   const playOnce = useCallback(
     (generationAtStart) => {
       if (!ctxRef.current) {

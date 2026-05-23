@@ -1,16 +1,39 @@
-# React + Vite
+# Wish Upon A Cake (Birthday App)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A fun, interactive birthday page built with React + Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Wish flow**: sign in → extinguish candles → see the **Happy Birthday** greeting screen.
+- **Animated cake & candles** (flicker + float animation while blowing/extinguishing).
+- **Confetti** appears when all candles are blown out.
+- **Generated birthday music** using the browser **Web Audio API** (no external audio files).
+- **Music toggle button** (▶️/⏹) to play or stop the soundtrack.
+- **Instruction chatbot** that explains how to use the app.
 
-## React Compiler
+## How to use
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Open the app.
+2. **Sign in** (name + password stored locally in the browser for this version).
+3. Click each **lit candle** to blow it out.
+4. After all candles are out, the greeting appears and the **music stops**.
+5. Use the bottom-right **music button** to play/stop the soundtrack anytime.
 
-## Expanding the ESLint configuration
+## Local multi-user login (demo)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+This version stores users in `localStorage` under:
+
+- `birthday_users_v1`
+- `birthday_last_user_v1`
+
+There is no real server authentication in this front-end-only demo.
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the URL shown in the terminal.
+
