@@ -302,15 +302,18 @@ export default function App() {
     <div className="min-h-screen flex flex-col items-center justify-center relative px-4 py-8"
       style={{
         background:
-          "radial-gradient(ellipse at center, rgba(168,85,247,0.35) 0%, rgba(30,64,175,0.25) 35%, rgba(9,9,33,1) 100%)",
+          "radial-gradient(ellipse at 20% 10%, rgba(168,85,247,0.28) 0%, transparent 55%), radial-gradient(ellipse at 80% 30%, rgba(255,107,157,0.22) 0%, transparent 50%), linear-gradient(180deg, rgba(19,0,38,0.7) 0%, rgba(7,0,18,1) 100%)",
       }}>
+
       <Stars />
       {showConfetti && <Confetti />}
 
       <div className="fixed inset-0 pointer-events-none z-0"
-        style={{ background: "radial-gradient(ellipse at 50% 70%, rgba(255,107,157,0.08) 0%, transparent 70%)" }} />
+        style={{ background: "radial-gradient(ellipse at 50% 70%, rgba(255,209,102,0.10) 0%, transparent 65%), radial-gradient(ellipse at 35% 20%, rgba(168,85,247,0.10) 0%, transparent 55%)" }} />
 
-      <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-lg">
+
+      <div className="relative z-10 flex flex-col items-center gap-8 w-full max-w-lg px-1 sm:px-0">
+
         {!playerName ? (
           <LoginScreen
 
@@ -362,9 +365,20 @@ export default function App() {
               <p className="font-quicksand text-white/60 text-sm tracking-widest uppercase mb-1">
                 Wish Mode
               </p>
-              <h2 className="font-pacifico text-3xl md:text-4xl" style={{ color: "#ffd166" }}>
+              <h2
+                className="font-quicksand text-3xl md:text-4xl font-extrabold tracking-tight"
+                style={{
+                  background:
+                    "linear-gradient(90deg, var(--accent3) 0%, var(--accent) 50%, var(--accent2) 100%)",
+                  WebkitBackgroundClip: "text",
+                  backgroundClip: "text",
+                  color: "transparent",
+                  textShadow: "0 0 24px rgba(255,107,157,0.18)",
+                }}
+              >
                 Make your wish ✨
               </h2>
+
             </div>
 
 
@@ -389,6 +403,7 @@ export default function App() {
 
       <button
         onClick={() => {
+
           // ▶️ should play, ⏹ should stop
           if (musicStarted) {
             stopMusic();

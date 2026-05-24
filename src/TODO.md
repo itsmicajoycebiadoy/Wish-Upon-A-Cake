@@ -8,3 +8,6 @@
 - [x] Remove microphone/blow-with-mic features
 - [x] Fix ESLint purity errors (no Math.random in render)
 - [ ] Improve candle click area: allow clicking the candle body/flame directly inside Candle component
+- [x] Modernize UI fonts + background colors (interface polish)
+
+

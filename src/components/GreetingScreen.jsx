@@ -22,14 +22,20 @@ export default function GreetingScreen() {
 
       <div className="text-center">
         <h1
-          className="font-pacifico text-6xl md:text-8xl animate-pulse3d"
+          className="font-quicksand text-6xl md:text-8xl animate-pulse3d font-extrabold tracking-tight"
           style={{
-            color: "#ff6b9d",
-            textShadow: "0 0 30px #ff69b4, 0 0 60px #ff1493",
+            background:
+              "linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.75) 35%, rgba(255,255,255,0.95) 70%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+            textShadow: "0 0 24px rgba(255,255,255,0.08)",
           }}
         >
           Happy Birthday, You!
         </h1>
+
+
       </div>
 
       <p

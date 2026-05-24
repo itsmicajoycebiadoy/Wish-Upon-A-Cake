@@ -15,14 +15,23 @@ export default function LoginScreen({ onLogin, loading, error }) {
           Sign in to your birthday
         </div>
         <h2
-          className="font-pacifico text-3xl md:text-4xl"
-          style={{ color: "#ffd166", textShadow: "0 0 20px rgba(255,209,102,0.5)" }}
+          className="font-quicksand text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight"
+          style={{
+            background:
+              "linear-gradient(90deg, var(--accent3) 0%, var(--accent) 55%, var(--accent2) 100%)",
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+            textShadow: "0 0 20px rgba(255,107,157,0.18)",
+          }}
         >
+
           Wish Login
         </h2>
       </div>
 
-      <div className="w-full max-w-md rounded-2xl border border-white/10 bg-black/50 backdrop-blur-md p-5">
+      <div className="w-full max-w-md rounded-2xl border border-[var(--panel-border)] bg-[var(--panel-strong)]/60 backdrop-blur-md p-5 shadow-[var(--shadow-soft)]">
+
         <form
           onSubmit={(e) => {
             e.preventDefault();

@@ -3,10 +3,34 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  background: #0d0015;
-  overflow-x: hidden;
+:root {
+  --bg0: #070012;
+  --bg1: #130026;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-strong: rgba(0, 0, 0, 0.35);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.68);
+
+  --accent: #ff6b9d;
+  --accent2: #a855f7;
+  --accent3: #ffd166;
+
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.35);
 }
+
+body {
+  background: radial-gradient(ellipse at center, rgba(168, 85, 247, 0.18) 0%, rgba(255, 107, 157, 0.14) 30%, var(--bg0) 100%);
+  color: var(--text);
+  font-family: "Quicksand", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 
 .flame-outer {
   width: 14px;
